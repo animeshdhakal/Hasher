@@ -1,4 +1,4 @@
-a = {
+const a = {
     "a": 1, "A": 28, "1": 54, "\\":80,
     "b": 2, "B": 29, "2": 55, "/":81,
     "c": 3, "C": 30, "3": 56, "?":82,
@@ -27,40 +27,49 @@ a = {
     "z": 27,  "Z": 53, ">":79, 
 }
 
+function get(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
 
-b = dict(map(reversed, a.items()))
-
-
-def encode(data):
-    j = ""
-    for i in data:
-        if(i == " "):
+function encode(data){
+    let j = ""
+    for(var i = 0; i<data.length; i++){
+        if(data[i]==" "){
             j += "0 "
             continue
-        j += str(a[i])
+        }
+        j += String(a[data[i]])
         j += " "
-    return j
+    }
+    return j;
+}
 
-
-def decode(data):
-    if(data[len(data)-1] != " "):
+function decode(data){
+    let j = ""
+    let k = ""
+    if(data[data.length - 1] !== ""){
         data += " "
-    j = ""
-    k = ""
-    for i in data:
-        if(i == " "):
-            if k == "0":
+    }
+    for(var i = 0; i<data.length; i++){
+        if(data[i]===" "){
+            if(k === "0"){
                 j += " "
                 continue
-            j += b[int(k)]
+            }
+            j += get(a, Number(k))
             k = ""
-            continue
-        k += i
-    return j
+            continue;
+        }
+        k += data[i]
+    }
+    return j;
+}
 
-
-def check(string, hash):
-    if(hash[len(hash)-1] != " "):
+function check(string, hash){
+    if(hash[hash.length - 1] !== ""){
         hash += " "
-    b = encode(string)
-    return hash == b
+    }
+    return encode(string)===hash;
+}
+
+module.exports = {encode, decode, check}
